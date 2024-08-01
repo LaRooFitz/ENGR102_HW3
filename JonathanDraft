@@ -108,6 +108,78 @@ def z_score(x, mu, sigma):
     # Participating group member names go in this comment
     #Jonathan Ichino, Shasta Fitzgerald
     # Your code goes between this comment and the return    
-    z = (x - mu)/sigma
+    z = (x - mu)/sigma #This line calculates the z-score as the variable z using the provided parameters
     
-    return z
+    return z #This line returns z to provide the z-score
+
+#Because the previous function only completes the calculation step of the algorithm, we would need additional functions to request the population set and population item from the user and to return the z-score to the user.
+def user_interface():
+    print("Please choose a population: 1, 2, or 3?")
+    while True:
+        user_population = input()
+        try:
+            user_population = int(user_population)
+        except:
+            print("Please enter 1, 2, or 3.")
+            continue
+        if user_population < 0 or user_population > 3:
+            print("Please enter 1, 2, or 3.")
+            continue
+        break
+    if user_population == 1:
+        population = population1
+        print("Population 1 is", population)
+    elif user_population == 2:
+        population = population2
+        print("Population 2 is", population)
+    elif user_population == 3:
+        population = population3
+        print("Population 3 is", population)
+    print("Please choose a number from the population.")
+    while True:
+        user_item = input()
+        try:
+            user_item = int(user_item)
+        except:
+            print("Please enter the number from the population.")
+            continue
+        if not user_item in population:
+            print("Please enter the number from the population.")
+            continue
+        break
+    user_z_score = z_score(user_item, mean(population), stdev(population, mean(population)))
+    print ("The z-score of", user_item, "is", user_z_score)
+
+#Test Functions
+import random #We use this to grab a random value from the population set and compare its z-score to the mean, greatest, and least
+def choose_random_number(population_set):
+        random_number = random.choice(population_set)
+        if random_number == mean(population_set) or random_number == greatest(population_set) or random_number == least(population_set):
+            while random_number == mean(population_set) or random_number == greatest(population_set) or random_number == least(population_set):
+                random_number = random.choice(population_set)
+            else:
+                return random_number
+        else:
+            return random_number
+            
+def test_function(test_population_set):
+	z_score_mean_test = z_score(mean(test_population_set),mean(test_population_set), stdev(test_population_set, mean(test_population_set)))
+	z_score_greatest_test = z_score(greatest(test_population_set),mean(test_population_set), stdev(test_population_set, mean(test_population_set)))
+	z_score_least_test = z_score(least(test_population_set),mean(test_population_set), stdev(test_population_set, mean(test_population_set)))
+	test_value = choose_random_number(test_population_set)
+	z_score_test_value = z_score(test_value,mean(test_population_set), stdev(test_population_set, mean(test_population_set)))
+	print("The test population set is", test_population_set)
+	print("The mean is", mean(test_population_set))
+	print("The greatest is", greatest(test_population_set))
+	print("The least is", least(test_population_set))
+	print("The standard deviation is", stdev(test_population_set, mean(test_population_set)))
+	print("The z-score of the mean is", z_score_mean_test)
+	print("The z-score of the greatest value is", z_score_greatest_test)
+	print("The z-score of the least value is", z_score_least_test)
+	print("The z-score of", test_value, "is", z_score_test_value)
+	
+#test_z_score_function()
+#user_interface()
+#test_function(population1)
+#test_function(population2)
+#test_function(population3)
